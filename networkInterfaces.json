@@ -30,7 +30,7 @@
       }
     },
     "ipConfigurations": {
-      "type": "object",
+      "type": "array",
       "metadata": {
         "description": "IPConfiguration in a network interface."
       }
@@ -54,18 +54,36 @@
     "comments": {
       "definition": "https://docs.microsoft.com/en-us/rest/api/virtualnetwork/networkinterfaces/createorupdate#networkinterface"
     },
-    "networkInterfaces": {
-      "name": "[parameters('name')]",
-      "properties": {
+    "networkSecurityGroupId": "[if(empty(parameters('networkSecurityGroupId')),json('null'),json(concat('{\"id\":','\"',parameters('networkSecurityGroupId'),'\"}')))]",
+    "properties": [
+      {
         "dnsSettings": "[parameters('dnsSettings')]",
         "enableAcceleratedNetworking": "[parameters('enableAcceleratedNetworking')]",
         "ipConfigurations": "[parameters('ipConfigurations')]",
-        "networkSecurityGroupId": "[parameters('networkSecurityGroupId')]"
+        "networkSecurityGroupId": "[variables('networkSecurityGroupId')]"
       },
+      {
+        "dnsSettings": "[parameters('dnsSettings')]",
+        "enableAcceleratedNetworking": "[parameters('enableAcceleratedNetworking')]",
+        "ipConfigurations": "[parameters('ipConfigurations')]"
+      }
+    ],
+    "networkInterfaces": {
+      "name": "[parameters('name')]",
+      "properties": "[if(empty(parameters('networkSecurityGroupId')),variables('properties')[1],variables('properties')[0])]",
       "tags": "[parameters('tags')]"
     }
   },
   "resources": [
+    {
+      "apiVersion": "2017-10-01",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[parameters('Name')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [ ],
+      "properties": "[variables('networkInterfaces').properties]",
+      "tags": "[parameters('tags')]"
+    }
   ],
   "outputs": {
     "networkInterfaces": {

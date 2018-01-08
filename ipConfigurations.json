@@ -1,0 +1,136 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "2017.09.01.0",
+  "parameters": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": ""
+      }
+    },
+    "applicationGatewayBackendAddressPools": {
+      "type": "array",
+      "defaultValue": [ ],
+      "metadata": {
+        "description": "Reference to another subresource."
+      }
+    },
+    "applicationSecurityGroups": {
+      "type": "array",
+      "defaultValue": [ ],
+      "metadata": {
+        "description": "Reference to another subresource."
+      }
+    },
+    "loadBalancerBackendAddressPoolsId": {
+      "type": "array",
+      "defaultValue": [ ],
+      "metadata": {
+        "description": "Reference to another subresource."
+      }
+    },
+    "loadBalancerInboundNatRulesId": {
+      "type": "array",
+      "defaultValue": [ ],
+      "metadata": {
+        "description": "Reference to another subresource."
+      }
+    },
+    "privateIPAddress": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Private IP address of the IP configuration."
+      }
+    },
+    "privateIPAddressVersion": {
+      "type": "string",
+      "defaultValue": "IPv4",
+      "allowedValues": [
+        "IPv4",
+        "IPv6"
+      ],
+      "metadata": {
+        "description": "Available from Api-Version 2016-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'."
+      }
+    },
+    "privateIPAllocationMethod": {
+      "type": "string",
+      "defaultValue": "Dynamic",
+      "allowedValues": [
+        "Dynamic",
+        "Static"
+      ],
+      "metadata": {
+        "description": "Defines how a private IP address is assigned. Possible values are: 'Static' and 'Dynamic'."
+      }
+    },
+    "publicIPAddressId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Public IP address bound to the IP configuration."
+      }
+    },
+    "subnet": {
+      "type": "string",
+      "metadata": {
+        "description": "Subnet bound to the IP configuration."
+      }
+    }
+  },
+  "variables": {
+    "comments": {
+      "definition": "https://docs.microsoft.com/en-us/rest/api/virtualnetwork/networkinterfaces/createorupdate#networkinterfaceipconfiguration"
+    },
+    "propertiesArray": [
+      {
+        "privateIPAllocationMethod": "[parameters('privateIPAllocationMethod')]",
+        "privateIPAddressVersion": "[parameters('privateIPAddressVersion')]",
+        "subnet": {
+          "id": "[parameters('subnet')]"
+        }
+      },
+      {
+        "privateIPAddress": "[parameters('privateIPAddress')]",
+        "privateIPAllocationMethod": "[parameters('privateIPAllocationMethod')]",
+        "privateIPAddressVersion": "[parameters('privateIPAddressVersion')]",
+        "subnet": {
+          "id": "[parameters('subnet')]"
+        }
+      },
+      {
+        "loadBalancerBackendAddressPoolsId": "[parameters('loadBalancerBackendAddressPoolsId')]",
+        "privateIPAllocationMethod": "[parameters('privateIPAllocationMethod')]",
+        "privateIPAddressVersion": "[parameters('privateIPAddressVersion')]",
+        "subnet": {
+          "id": "[parameters('subnet')]"
+        }
+      },
+      {
+        "loadBalancerBackendAddressPoolsId": "[parameters('loadBalancerBackendAddressPoolsId')]",
+        "privateIPAddress": "[parameters('privateIPAddress')]",
+        "privateIPAllocationMethod": "[parameters('privateIPAllocationMethod')]",
+        "privateIPAddressVersion": "[parameters('privateIPAddressVersion')]",
+        "subnet": {
+          "id": "[parameters('subnet')]"
+        }
+      }
+    ],
+    "baseConfig": "[if(equals(parameters('privateIPAllocationMethod'),'Static'),variables('propertiesArray')[1],variables('propertiesArray')[0])]",
+    "lbConfig": "[if(equals(parameters('privateIPAllocationMethod'),'Static'),variables('propertiesArray')[3],variables('propertiesArray')[2])]",
+    "properties": "[if(empty(parameters('loadBalancerBackendAddressPoolsId')),variables('baseConfig'),variables('lbConfig'))]",
+    "ipConfigurations": {
+      "name": "[parameters('name')]",
+      "properties": "[variables('properties')]"
+    }
+  },
+  "resources": [
+  ],
+  "outputs": {
+    "ipConfigurations": {
+      "type": "object",
+      "value": "[variables('ipConfigurations')]"
+    }
+  }
+}
