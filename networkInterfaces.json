@@ -1,0 +1,76 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "2017.09.01.0",
+  "parameters": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource name."
+      }
+    },
+    "dnsSettings": {
+      "type": "object",
+      "defaultValue": { },
+      "metadata": {
+        "description": "The DNS settings in network interface."
+      }
+    },
+    "enableAcceleratedNetworking": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "If the network interface is accelerated networking enabled."
+      }
+    },
+    "enableIPForwarding": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Indicates whether IP forwarding is enabled on this network interface."
+      }
+    },
+    "ipConfigurations": {
+      "type": "object",
+      "metadata": {
+        "description": "IPConfiguration in a network interface."
+      }
+    },
+    "networkSecurityGroupId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "The reference of the NetworkSecurityGroup resource."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": { },
+      "metadata": {
+        "description": "Resource tags."
+      }
+    }
+  },
+  "variables": {
+    "comments": {
+      "definition": "https://docs.microsoft.com/en-us/rest/api/virtualnetwork/networkinterfaces/createorupdate#networkinterface"
+    },
+    "networkInterfaces": {
+      "name": "[parameters('name')]",
+      "properties": {
+        "dnsSettings": "[parameters('dnsSettings')]",
+        "enableAcceleratedNetworking": "[parameters('enableAcceleratedNetworking')]",
+        "ipConfigurations": "[parameters('ipConfigurations')]",
+        "networkSecurityGroupId": "[parameters('networkSecurityGroupId')]"
+      },
+      "tags": "[parameters('tags')]"
+    }
+  },
+  "resources": [
+  ],
+  "outputs": {
+    "networkInterfaces": {
+      "type": "object",
+      "value": "[variables('networkInterfaces')]"
+    }
+  }
+}
