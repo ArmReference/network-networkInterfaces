@@ -69,7 +69,11 @@
       }
     ],
     "networkInterfaces": {
-      "name": "[parameters('name')]",
+      "apiVersion": "2017-10-01",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[parameters('Name')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [],
       "properties": "[if(empty(parameters('networkSecurityGroupId')),variables('properties')[1],variables('properties')[0])]",
       "tags": "[parameters('tags')]"
     }
