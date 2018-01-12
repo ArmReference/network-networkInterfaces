@@ -10,28 +10,28 @@
     },
     "applicationGatewayBackendAddressPools": {
       "type": "array",
-      "defaultValue": [ ],
+      "defaultValue": [],
       "metadata": {
         "description": "Reference to another subresource."
       }
     },
     "applicationSecurityGroups": {
       "type": "array",
-      "defaultValue": [ ],
+      "defaultValue": [],
       "metadata": {
         "description": "Reference to another subresource."
       }
     },
     "loadBalancerBackendAddressPoolsId": {
-      "type": "array",
-      "defaultValue": [ ],
+      "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Reference to another subresource."
       }
     },
     "loadBalancerInboundNatRulesId": {
       "type": "array",
-      "defaultValue": [ ],
+      "defaultValue": [],
       "metadata": {
         "description": "Reference to another subresource."
       }
@@ -100,7 +100,9 @@
         }
       },
       {
-        "loadBalancerBackendAddressPoolsId": "[parameters('loadBalancerBackendAddressPoolsId')]",
+        "loadBalancerBackendAddressPools": {
+          "id": "[parameters('loadBalancerBackendAddressPoolsId')]"
+        },
         "privateIPAllocationMethod": "[parameters('privateIPAllocationMethod')]",
         "privateIPAddressVersion": "[parameters('privateIPAddressVersion')]",
         "subnet": {
@@ -108,7 +110,9 @@
         }
       },
       {
-        "loadBalancerBackendAddressPoolsId": "[parameters('loadBalancerBackendAddressPoolsId')]",
+        "loadBalancerBackendAddressPools": {
+          "id": "[parameters('loadBalancerBackendAddressPoolsId')]"
+        },
         "privateIPAddress": "[parameters('privateIPAddress')]",
         "privateIPAllocationMethod": "[parameters('privateIPAllocationMethod')]",
         "privateIPAddressVersion": "[parameters('privateIPAddressVersion')]",
