@@ -10,7 +10,7 @@
     },
     "dnsSettings": {
       "type": "object",
-      "defaultValue": { },
+      "defaultValue": {},
       "metadata": {
         "description": "The DNS settings in network interface."
       }
@@ -44,9 +44,16 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": { },
+      "defaultValue": {},
       "metadata": {
         "description": "Resource tags."
+      }
+    },
+    "DependsOn": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Pass dependencies"
       }
     }
   },
@@ -73,7 +80,7 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[parameters('Name')]",
       "location": "[resourceGroup().location]",
-      "dependsOn": [],
+      "dependsOn": "[if(empty(parameters('DependsOn')),json('null'),parameters('DependsOn'))]",
       "properties": "[if(empty(parameters('networkSecurityGroupId')),variables('properties')[1],variables('properties')[0])]",
       "tags": "[parameters('tags')]"
     }
@@ -84,7 +91,7 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[parameters('Name')]",
       "location": "[resourceGroup().location]",
-      "dependsOn": [ ],
+      "dependsOn": "[if(empty(parameters('DependsOn')),json('null'),parameters('DependsOn'))]",
       "properties": "[variables('networkInterfaces').properties]",
       "tags": "[parameters('tags')]"
     }
