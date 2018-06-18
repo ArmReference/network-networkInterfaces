@@ -85,17 +85,7 @@
       "tags": "[parameters('tags')]"
     }
   },
-  "resources": [
-    {
-      "apiVersion": "2017-10-01",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[parameters('Name')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": "[if(empty(parameters('DependsOn')),json('null'),parameters('DependsOn'))]",
-      "properties": "[variables('networkInterfaces').properties]",
-      "tags": "[parameters('tags')]"
-    }
-  ],
+  "resources": [ ],
   "outputs": {
     "networkInterfaces": {
       "type": "object",
